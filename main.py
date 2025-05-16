@@ -20,5 +20,11 @@ canvas = tk.Canvas(
 )
 canvas.pack()  # Размещаем canvas в окне
 
+# Начальное состояние игры
+snake = [(100, 100), (90, 100), (80, 100)]
+direction = "Right"
+food = None
+score = 0
+game_over = False
 # Запуск главного цикла программы
 root.mainloop()
