@@ -40,8 +40,29 @@ def create_food():
         if (x, y) not in snake:
             return (x, y)
 
+
 # Создание первой еды
 food = create_food()
+
+
+# Отрисовка еды
+def draw_food():
+    canvas.create_rectangle(
+        food[0], food[1], food[0] + CELL_SIZE, food[1] + CELL_SIZE, fill="red"
+    )
+
+
+# Игровой цикл
+def game_loop():
+    global snake, food, score
+    canvas.delete("all")
+    draw_food()
+    root.after(DELAY, game_loop)
+
+
+# Первоначальная отрисовка
+draw_food()
+root.after(DELAY, game_loop)
 
 # Запуск главного цикла программы
 root.mainloop()
