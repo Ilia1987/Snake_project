@@ -51,12 +51,23 @@ def draw_food():
         food[0], food[1], food[0] + CELL_SIZE, food[1] + CELL_SIZE, fill="red"
     )
 
+# Отрисовка змейки
+def draw_snake():
+    for segment in snake:
+        canvas.create_rectangle(
+            segment[0], segment[1],  # Верхний левый угол
+            segment[0] + CELL_SIZE,  # Нижний правый угол (x)
+            segment[1] + CELL_SIZE,  # Нижний правый угол (y)
+            fill="green",            # Цвет заливки
+            outline="darkgreen"      # Цвет обводки
+        )
 
 # Игровой цикл
 def game_loop():
     global snake, food, score
     canvas.delete("all")
     draw_food()
+    draw_snake()
     root.after(DELAY, game_loop)
 
 
