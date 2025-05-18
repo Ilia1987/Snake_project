@@ -62,9 +62,39 @@ def draw_snake():
             outline="darkgreen"      # Цвет обводки
         )
 
+# Движение змейки
+def move_snake():
+    head_x, head_y = snake[0]
+
+    if direction == "Up":
+        new_head = (head_x, head_y - CELL_SIZE)
+    elif direction == "Down":
+        new_head = (head_x, head_y + CELL_SIZE)
+    elif direction == "Left":
+        new_head = (head_x - CELL_SIZE, head_y)
+    elif direction == "Right":
+        new_head = (head_x + CELL_SIZE, head_y)
+
+    snake.insert(0, new_head)
+    snake.pop()
+
+# Обработка клавиш
+def on_key_press(event):
+    global direction
+    key = event.keysym
+    if key in DIRECTIONS:
+        if (key == "Up" and direction != "Down" or
+            key == "Down" and direction != "Up" or
+            key == "Left" and direction != "Right" or
+            key == "Right" and direction != "Left"):
+            direction = key
+
+root.bind("<KeyPress>", on_key_press)
+
 # Игровой цикл
 def game_loop():
     global snake, food, score
+    move_snake()
     canvas.delete("all")
     draw_food()
     draw_snake()
