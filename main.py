@@ -51,16 +51,28 @@ def draw_food():
         food[0], food[1], food[0] + CELL_SIZE, food[1] + CELL_SIZE, fill="red"
     )
 
+
 # Отрисовка змейки
 def draw_snake():
     for segment in snake:
         canvas.create_rectangle(
-            segment[0], segment[1],  # Верхний левый угол
+            segment[0],
+            segment[1],  # Верхний левый угол
             segment[0] + CELL_SIZE,  # Нижний правый угол (x)
             segment[1] + CELL_SIZE,  # Нижний правый угол (y)
-            fill="green",            # Цвет заливки
-            outline="darkgreen"      # Цвет обводки
+            fill="green",  # Цвет заливки
+            outline="darkgreen",  # Цвет обводки
         )
+
+
+def check_food_collision():
+    global food, score
+    if snake[0] == food:
+        score += 1  # Увеличиваем счёт
+        food = create_food()  # Генерируем новую еду
+        return True  # Сообщаем, что еда съедена
+    return False  # Еда не съедена
+
 
 # Движение змейки
 def move_snake():
@@ -76,20 +88,34 @@ def move_snake():
         new_head = (head_x + CELL_SIZE, head_y)
 
     snake.insert(0, new_head)
-    snake.pop()
+    if not check_food_collision():  # Если еда не съедена
+        snake.pop()  # Удаляем хвост
+
 
 # Обработка клавиш
 def on_key_press(event):
     global direction
     key = event.keysym
     if key in DIRECTIONS:
-        if (key == "Up" and direction != "Down" or
-            key == "Down" and direction != "Up" or
-            key == "Left" and direction != "Right" or
-            key == "Right" and direction != "Left"):
+        if (
+            key == "Up"
+            and direction != "Down"
+            or key == "Down"
+            and direction != "Up"
+            or key == "Left"
+            and direction != "Right"
+            or key == "Right"
+            and direction != "Left"
+        ):
             direction = key
 
+
 root.bind("<KeyPress>", on_key_press)
+
+
+def update_title():
+    root.title(f"Змейка | Счёт: {score}")
+
 
 # Игровой цикл
 def game_loop():
@@ -98,6 +124,7 @@ def game_loop():
     canvas.delete("all")
     draw_food()
     draw_snake()
+    update_title()
     root.after(DELAY, game_loop)
 
 
