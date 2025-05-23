@@ -65,6 +65,26 @@ def draw_snake():
         )
 
 
+# Проверка столкновения со стеной
+def check_wall_collision():
+    head_x, head_y = snake[0]
+    return head_x < 0 or head_x >= WIDTH or head_y < 0 or head_y >= HEIGHT
+
+
+# Завершение игры
+def end_game():
+    global game_over
+    game_over = True
+    canvas.create_text(
+        WIDTH // 2,
+        HEIGHT // 2,
+        text=f"Игра окончена! Счёт: {score}",
+        fill="white",
+        font=("Arial", 24),
+    )
+
+
+# Проверка поедания еды
 def check_food_collision():
     global food, score
     if snake[0] == food:
@@ -92,7 +112,7 @@ def move_snake():
         snake.pop()  # Удаляем хвост
 
 
-# Обработка клавиш
+# Управление
 def on_key_press(event):
     global direction
     key = event.keysym
@@ -113,6 +133,7 @@ def on_key_press(event):
 root.bind("<KeyPress>", on_key_press)
 
 
+# Обновляем заголовок окна
 def update_title():
     root.title(f"Змейка | Счёт: {score}")
 
@@ -120,7 +141,15 @@ def update_title():
 # Игровой цикл
 def game_loop():
     global snake, food, score
+
+    if game_over:
+        return
+
     move_snake()
+    
+    if check_wall_collision():
+        end_game()
+        return
     canvas.delete("all")
     draw_food()
     draw_snake()
