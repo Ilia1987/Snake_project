@@ -107,7 +107,7 @@ def move_snake():
     elif direction == "Right":
         new_head = (head_x + CELL_SIZE, head_y)
 
-    snake.insert(0, new_head)
+    snake.insert(0, new_head)  # Добавляем новую голову
     if not check_food_collision():  # Если еда не съедена
         snake.pop()  # Удаляем хвост
 
@@ -146,7 +146,7 @@ def game_loop():
         return
 
     move_snake()
-    
+
     if check_wall_collision():
         end_game()
         return
