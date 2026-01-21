@@ -157,6 +157,7 @@ def game_loop():
     root.after(DELAY, game_loop)
 
 
+
 # Первоначальная отрисовка
 draw_food()
 root.after(DELAY, game_loop)
